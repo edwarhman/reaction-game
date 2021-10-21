@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction game</title>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: whitesmoke;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        div {
+            font-size: calc(12rem + 1vw);
+        }
+
+        .spinner-container {
+            width: 1em;
+            height: 1em;
+            align-self: center;
+        }
+
+        .play-button {
+            border: 3px solid gray;
+            border-radius: 10%;
+            box-shadow: gray 7px 7px 4px;
+            text-transform: uppercase;
+            line-height: 1;
+            background-image: linear-gradient(gray , 1%, white 20%);
+            min-width: 1em;
+            text-align: center;
+            font-size: calc(7rem + 1vw);
+            position: relative;
+        }
+
+        .play-button.unlock {
+            border: 5px solid gold;
+            background-image: none;
+        }
+
+        .play-button.pressed {
+            border: 5px solid green;
+            background-image: none;
+        }
+
+        button {
+            display: block;
+            align-self: center;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        #play {
+            font-size: 4rem;
+        }
+
+        #instructions {
+            font-size: 1.5rem;
+        }
+
+        #modal-button {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: initial;
+            cursor: pointer;
+        }
+
+        #modal-button:hover {
+            color: gray
+        }
+
+        #modal-button:active {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner-container">
+        <div id="spinner">↻</div>
+    </div>
+
+    <div class="buttons-container">
+        <div id="player-1" class="play-button">a</div>
+        <div id="player-2" class="play-button">l</div>
+    </div>
+    <p></p>
+    <button id="play">Play</button>
+    <button id="instructions">Instructions</button>
+    <dialog>
+        <div id="modal-button">x</div>
+        <header>Instructions</header>
+        <ul>
+            <li>There are two player. One of must press the 'A' button and the other must press the 'L' button.</li>
+            <li>When the game start, the spinner will start to spin.</li>
+            <li>When the spinner stops the players must press their correspond button.</li>
+            <li>The player who press the button first will win the game.</li>
+            <ul><li>If the spinner is spinning and one of the players press the button, that player will lose the game inmediatly.</li></ul>
+        </ul>
+        
+    </dialog>
+    <script>
+        let spinner = document.getElementById('spinner');
+        let buttonNode = document.querySelectorAll('.play-button');
+        let rotateCount = 0;
+        let startTime = null;
+        let rAF;
+        let spinning = false;
+        let maxtime = random(5, 10);
+        let count = 0;
+        let unlock = false;
+        let result = "";
+        let message = "";
+        
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min; 
+        }
+        function draw(timestamp) {
+            if (!startTime) {
+                startTime = timestamp;
+            }
+            // The current timestamp, take the starting timestamp, divided by three so it doesn't go too fast).
+            rotateCount = (timestamp - startTime) / 3;
+
+            // This is not strictly necesary, but it is easier work with values of 0-359 derees than values like "128000 degrees".
+            if (rotateCount > 359) {
+                rotateCount %= 360;
+            }
+
+            // console.log(timestamp - startTime);
+            spinner.style.transform = `rotate(${rotateCount}deg)`;
+            if (timestamp - startTime <= maxtime * 1000) {
+            }
+            rAF = requestAnimationFrame(draw);
+        }
+        function verifyTime() {
+            if (count >= maxtime) {
+                cancelAnimationFrame(rAF);
+                buttonNode.forEach((e)=> {
+                    e.classList.toggle("unlock");
+                })
+                unlock = true;
+                clearInterval(createClock);
+            }
+            count++;    
+        }
+
+        let createClock;
+        document.getElementById('instructions').addEventListener('click', ()=> {
+            document.querySelector('dialog').toggleAttribute('open');
+        });
+
+        document.getElementById('modal-button').addEventListener('click', ()=> {
+            document.querySelector('dialog').toggleAttribute('open');
+        });
+        
+        document.getElementById('play').addEventListener('click', ()=> {
+            maxtime = random(5,10);
+            count = 0;
+            draw();
+            createClock = setInterval(verifyTime,1000);
+        });
+        document.addEventListener('keypress', e => {
+            if (e.key === 'a') {
+                console.log('se pulso a');
+                if (unlock === true) {
+                    result = "win";
+                } else {
+                    result = "lose";
+                }
+                message = "Player One " + result + "!";
+            }
+            else if (e.key === 'l') {
+                console.log("se pulso l");
+                if (unlock === true) {
+                    result = "win";
+                } else {
+                    result = "lose";
+                }
+                message = "Player Two " + result + "!";
+            }
+            document.querySelector('p').textContent = message;
+        });
+
+    </script>
+</body> 
+</html>
