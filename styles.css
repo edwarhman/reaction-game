@@ -1,0 +1,77 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+
+  height: 100vh;
+  background-color: rgba(200, 50, 50, 1);
+  color: white;
+}
+
+ul, ol, dl {
+  padding-left: .9em;
+  line-height: 1.4;
+}
+
+.normal-size-font {
+  font-size: 1.6rem;
+}
+.big-size-font {
+  font-size: 3rem;
+}
+.huge-size-font {
+  font-size: 10rem;
+}
+.really-huge-size-font {
+  font-size: 20rem;
+} 
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-buttons.container {
+  justify-content: space-around;
+}
+.game-buttons.container {
+  flex-direction: column;
+}
+
+.game-buttons.container > * {
+  margin: 1rem 0;
+}
+
+.button {
+  border: .05em solid black;
+  border-radius: .1em;
+  background-color: white;
+  color: black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-transform: uppercase;
+  height: 1.4em;
+  padding: 0 .2em;
+
+}
+.button.player {
+  width: 1em;
+}
+.button.game {
+  cursor: pointer;
+}
+
+.instructions {
+  margin-top: 10%;
+  max-width: 400px;
+}
+.instructions .button {
+  margin: auto;
+}

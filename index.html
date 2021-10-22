@@ -5,31 +5,33 @@
   <title>Reaction Videogame</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body>
-  <div class="spinner-container">
-        <div id="spinner">↻</div>
+<body class="normal-size-font">
+
+  <dialog class="instructions">
+    <header class="big-size-font">Instructions</header>
+    <ul>
+      <li>There are two player. One of must press the 'A' button and the other must press the 'L' button.</li>
+      <li>When the game start, the spinner will start to spin.</li>
+      <li>When the spinner stops the players must press their correspond button.</li>
+      <li>The player who press the button first will win the game.</li>
+      <ul><li>If the spinner is spinning and one of the players press the button, that player will lose the game inmediatly.</li></ul>
+    </ul>
+    <button id="closeModalButton" class="button">close</button>
+  </dialog>
+
+
+  <div class="spinner container">
+        <div id="spinner" class="really-huge-size-font">↻</div>
     </div>
 
-    <div class="buttons-container">
-        <div id="player-1" class="play-button">a</div>
-        <div id="player-2" class="play-button">l</div>
+    <div class="player-buttons container huge-size-font">
+        <div id="player1" class="player button">a</div>
+        <div id="player2" class="player button">l</div>
     </div>
-    <p></p>
-    <button id="play">Play</button>
-    <button id="instructions">Instructions</button>
-    <dialog>
-        <div id="modal-button">x</div>
-        <header>Instructions</header>
-        <ul>
-            <li>There are two player. One of must press the 'A' button and the other must press the 'L' button.</li>
-            <li>When the game start, the spinner will start to spin.</li>
-            <li>When the spinner stops the players must press their correspond button.</li>
-            <li>The player who press the button first will win the game.</li>
-            <ul><li>If the spinner is spinning and one of the players press the button, that player will lose the game inmediatly.</li></ul>
-        </ul>
-        
-    </dialog>
-
+    <div class="game-buttons container">
+      <button id="playButton" class="big-size-font button">Play</button>
+      <button id="instructionsButton" class="button" >Instructions</button>
+    </div>
     <script src="scripts.js"></script>
 </body>
 </html>
