@@ -60,14 +60,16 @@ ul, ol, dl {
   height: 1.4em;
   padding: 0 .2em;
 
-}
-.button.player {
-  width: 1em;
-}
-.button.game {
   cursor: pointer;
 }
+.button.player {
+  cursor: initial;
+  width: 1em;
+}
 
+.button.player.waiting {
+  border-color: gold;
+}
 .instructions {
   margin-top: 10%;
   max-width: 400px;
