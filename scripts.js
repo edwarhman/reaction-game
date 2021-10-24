@@ -5,13 +5,19 @@ const player2 = document.getElementById('player2');
 const playButton = document.getElementById('playButton');
 const instructionsButton = document.getElementById('instructionsButton');
 const instructionsDialog = document.getElementById('instructionsDialog');
+const winnerMessage = document.getElementById('winnerMessage');
 
+const players = {
+  player1: player1,
+  player2: player2
+}
 let gameStarted = false;
 let spinning = false;
 let rotateCount = 0;
 let startTime = null;
 let rAF;
 let winner = 0;
+let stopTimeOut;
 
 document.body.addEventListener('click', e => {
   switch(e.target) {
@@ -22,11 +28,14 @@ document.body.addEventListener('click', e => {
       instructionsDialog.removeAttribute("open");
       break;
     case playButton:
-      gameStarted = true;
-      if (!spinning) {
-        spinning = true;
-        spin();
-        stopSpinner();
+      console.log(gameStarted);
+      if (!gameStarted) {
+        initializeGame();
+        if (!spinning) {
+          spinning = true;
+          spin();
+          stopSpinner();
+        }
       }
       break;
   }
@@ -34,22 +43,37 @@ document.body.addEventListener('click', e => {
 
 document.body.addEventListener("keydown" , e => {
   if (gameStarted) {
-  switch (e.key) {
-    case 'a':
-      if(spinning)
-        winner = 2;
-      else
-        winner = 1;
-      break;
-    case 'l':
-      if(spinning)
-        winner = 1;
-      else
-        winner = 2;
-      break;
-  }
+    console.log(spinning);
+    switch (e.key) {
+      case 'a':
+        if(spinning) {
+          winner = 2;
+          clearTimeout(stopTimeOut);
+          spinning = false;
+          cancelAnimationFrame(rAF);
+          console.log(`no se habia detenido. player 1 pierde, ganador `, winner);
+        } else {
+          console.log(`se detuvo, ganador es player 1 `, winner);
+          winner = 1;
+        }
+        break;
+      case 'l':
+        if(spinning) {
+          winner = 1;
+          clearTimeout(stopTimeOut);
+          spinning = false;
+          cancelAnimationFrame(rAF);
+          console.log(`no se habia detenido. player 2 pierde, ganador `, winner);
+        } else {
+          winner = 2;
+          console.log(`se detuvo, ganador es player 2 `, winner);
+        }
+        break;
+    }
     gameStarted = false;
-    console.log(`Player ${winner} has won`);
+    winnerMessage.textContent = `Player ${winner} won. Congratulations!`;
+    winnerMessage.hidden = false;
+    players[`player${winner}`].classList.add('winner');
   }
 });
 
@@ -65,12 +89,21 @@ function spin (timeStamp) {
 }
 
 function stopSpinner () {
-  spinning = false;
-  setTimeout(()=> {
+  stopTimeOut = setTimeout(()=> {
+    spinning = false;
     cancelAnimationFrame(rAF)
     player1.classList.add("waiting");
     player2.classList.add("waiting");
   }, randomInt(7,11) * 1000);
+}
+
+function initializeGame () {
+  gameStarted = true;
+  Object.keys(players).forEach(el => {
+    players[el].classList.remove('waiting');
+    players[el].classList.remove('winner');
+  });
+  winnerMessage.hidden = true;
 }
 
 function randomInt (min, max) {
@@ -78,4 +111,3 @@ function randomInt (min, max) {
 }
 
 console.log('se ha cargado el script');
-
