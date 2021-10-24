@@ -70,6 +70,14 @@ ul, ol, dl {
 .button.player.waiting {
   border-color: gold;
 }
+.button.player.winner {
+  border-color: green;
+}
+
+#winnerMessage {
+  text-align: center;
+}
+
 .instructions {
   margin-top: 10%;
   max-width: 400px;
