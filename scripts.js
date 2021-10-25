@@ -19,24 +19,24 @@ let looser = 0;
 let stopTimeOut;
 
 document.body.addEventListener('click', e => {
-  switch(e.target) {
-    case instructionsButton:
-      instructionsDialog.setAttribute("open", "");
-      break;
-    case closeModalButton:
-      instructionsDialog.removeAttribute("open");
-      break;
-    case playButton:
-      console.log(gameStarted);
-      if (!gameStarted) {
+  if (!gameStarted) {
+    switch(e.target) {
+      case instructionsButton:
+        instructionsDialog.setAttribute("open", "");
+        break;
+      case closeModalButton:
+        instructionsDialog.removeAttribute("open");
+        break;
+      case playButton:
+        console.log(gameStarted);
         initializeGame();
         if (!spinning) {
           spinning = true;
           spin();
-          stopSpinner();
+          stopTimeOut = setTimeout(stopSpinner, randomInt(5, 11) * 1000);
         }
-      }
-      break;
+        break;
+    }
   }
 });
 
@@ -47,24 +47,26 @@ document.body.addEventListener("keydown" , e => {
       case 'a':
         if(spinning) {
           winner = 2;
+          looser = 1;
           clearTimeout(stopTimeOut);
-          spinning = false;
-          cancelAnimationFrame(rAF);
+          stopSpinner();
           console.log(`no se habia detenido. player 1 pierde, ganador `, winner);
         } else {
           console.log(`se detuvo, ganador es player 1 `, winner);
           winner = 1;
+          looser = 2;
         }
         break;
       case 'l':
         if(spinning) {
           winner = 1;
+          looser = 2;
           clearTimeout(stopTimeOut);
-          spinning = false;
-          cancelAnimationFrame(rAF);
+          stopSpinner();
           console.log(`no se habia detenido. player 2 pierde, ganador `, winner);
         } else {
           winner = 2;
+          looser = 1;
           console.log(`se detuvo, ganador es player 2 `, winner);
         }
         break;
@@ -73,6 +75,7 @@ document.body.addEventListener("keydown" , e => {
     winnerMessage.textContent = `Player ${winner} won. Congratulations!`;
     winnerMessage.hidden = false;
     players[winner - 1].classList.add('winner');
+    players[looser - 1].classList.add('looser');
   }
 });
 
@@ -88,12 +91,10 @@ function spin (timeStamp) {
 }
 
 function stopSpinner () {
-  stopTimeOut = setTimeout(()=> {
-    spinning = false;
-    cancelAnimationFrame(rAF)
-    player1.classList.add("waiting");
-    player2.classList.add("waiting");
-  }, randomInt(7,11) * 1000);
+  spinning = false;
+  cancelAnimationFrame(rAF)
+  player1.classList.add("waiting");
+  player2.classList.add("waiting");
 }
 
 function initializeGame () {
