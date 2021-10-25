@@ -7,16 +7,15 @@ const instructionsButton = document.getElementById('instructionsButton');
 const instructionsDialog = document.getElementById('instructionsDialog');
 const winnerMessage = document.getElementById('winnerMessage');
 
-const players = {
-  player1: player1,
-  player2: player2
-}
+const players = [player1, player2];
+
 let gameStarted = false;
 let spinning = false;
 let rotateCount = 0;
 let startTime = null;
 let rAF;
 let winner = 0;
+let looser = 0;
 let stopTimeOut;
 
 document.body.addEventListener('click', e => {
@@ -73,7 +72,7 @@ document.body.addEventListener("keydown" , e => {
     gameStarted = false;
     winnerMessage.textContent = `Player ${winner} won. Congratulations!`;
     winnerMessage.hidden = false;
-    players[`player${winner}`].classList.add('winner');
+    players[winner - 1].classList.add('winner');
   }
 });
 
@@ -99,9 +98,10 @@ function stopSpinner () {
 
 function initializeGame () {
   gameStarted = true;
-  Object.keys(players).forEach(el => {
-    players[el].classList.remove('waiting');
-    players[el].classList.remove('winner');
+  players.forEach(el => {
+    el.classList.remove('waiting');
+    el.classList.remove('winner');
+    el.classList.remove('looser');
   });
   winnerMessage.hidden = true;
 }
