@@ -72,6 +72,13 @@ ul, ol, dl {
 }
 .button.player.winner {
   border-color: green;
+  background-color: green;
+  color: white;
+}
+.button.player.looser {
+  border-color: red;
+  background-color: red;
+  color: white;
 }
 
 #winnerMessage {
