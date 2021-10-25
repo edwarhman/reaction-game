@@ -71,7 +71,14 @@ ul, ol, dl {
   border-color: gold;
 }
 .button.player.winner {
-  border-color: green;
+  border-color: black;
+  background-color: green;
+  color: white;
+}
+.button.player.looser {
+  border-color: black;
+  background-color: red;
+  color: white;
 }
 
 #winnerMessage {
